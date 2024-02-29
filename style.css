@@ -30,28 +30,30 @@ table.table2 {
     /* Safari 6.0 - 9.0 */
     filter: brightness();
     animation: rotation 4s infinite linear;
+    width: 190%;
+    height: 180%;
 }
 #mak{
     position: relative;
     -webkit-filter: blur(5px);
     filter: grayscale();
-    animation: mymove 4s infinite;
+    animation: mymove 2s infinite;
     animation-delay: 0s;
-    animation-direction: alternate;
    
 }
 
 @keyframes mymove {
-    from {left: 0px;}
-    to {left: 400px;}
+    0%   {left: 0px; top: 0px;}
+    25%  {left: 400px; top: 0px;}
+    50%  {left: 400px; top: 400px;}
+    75%  {left: 0px; top: 400px;}
+    100% {left: 0px; top: 0px;}
   }
 @keyframes rotation {
 from {
     transform: rotate(0deg);
-    left: 0px;
 }
 to {
     transform: rotate(359deg);
-    left: 400px;
 }
 }
