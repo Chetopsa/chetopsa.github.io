@@ -1,0 +1,28 @@
+nav {
+    background-color: rgb(151, 178, 231);
+    text-align: center;
+    padding: 10px;
+    margin: 0 auto;
+    border: 3px solid rgb(12, 3, 12);
+}
+img{
+    width: 175px; 
+    height: 175px;
+    border: 3px solid black;
+}
+table.table2 {
+    border-collapse: collapse;
+    border-spacing: 3px;
+    width: 40%;
+    border: 1px solid black;
+  }
+  table.table2 th, table.table2 td {
+      text-align: left;
+      padding: 8px;
+  }
+
+  .youtube-video {
+    border: none; 
+    width: 560px;
+    height: 315px;
+}
