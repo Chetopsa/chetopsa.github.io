@@ -6,8 +6,8 @@ nav {
     border: 3px solid rgb(12, 3, 12);
 }
 img{
-    width: 175px; 
-    height: 175px;
+    width: 300px; 
+    height: 300px;
     border: 3px solid black;
 }
 table.table2 {
@@ -25,4 +25,33 @@ table.table2 {
     border: none; 
     width: 560px;
     height: 315px;
+}
+#mak:hover{
+    /* Safari 6.0 - 9.0 */
+    filter: brightness();
+    animation: rotation 4s infinite linear;
+}
+#mak{
+    position: relative;
+    -webkit-filter: blur(5px);
+    filter: grayscale();
+    animation: mymove 4s infinite;
+    animation-delay: 0s;
+    animation-direction: alternate;
+   
+}
+
+@keyframes mymove {
+    from {left: 0px;}
+    to {left: 400px;}
+  }
+@keyframes rotation {
+from {
+    transform: rotate(0deg);
+    left: 0px;
+}
+to {
+    transform: rotate(359deg);
+    left: 400px;
+}
 }
