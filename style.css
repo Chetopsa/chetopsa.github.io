@@ -57,3 +57,10 @@ to {
     transform: rotate(359deg);
 }
 }
+#mak{
+    position: relative;
+    -webkit-filter: blur(5px);
+    filter: grayscale();
+    animation: mymove 6s infinite;
+    animation-delay: 0s;
+}
