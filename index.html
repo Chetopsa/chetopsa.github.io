@@ -1,59 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="./style.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delt meal Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f5ff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4b0082;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 4px solid #7e57c2;
+      border-image-slice: 1;
+      border-image-source: linear-gradient(90deg, #7e57c2, #ffbf00);
+      animation: border-shimmer 3s infinite linear;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #ffbf00;
+      color: #7e57c2;
+      font-size: 1.2em;
+    }
+
+    td {
+      font-size: 1em;
+      background-color: #f3e5f5;
+      outline: none;
+    }
+
+    td:focus {
+      background-color: #ffe4b5;
+      border: 2px solid #ffbf00;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f9e4ff;
+    }
+
+    tr:hover td {
+      background-color: #ffe4b5;
+    }
+
+    @keyframes border-shimmer {
+      0% {
+        border-image-source: linear-gradient(90deg, #7e57c2, #ffbf00);
+      }
+      50% {
+        border-image-source: linear-gradient(90deg, #ffbf00, #7e57c2);
+      }
+      100% {
+        border-image-source: linear-gradient(90deg, #7e57c2, #ffbf00);
+      }
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <a href="./fun_page.html">FUNARAMA</a>
-        <a href="./index.html">My Profile</a>
-    </nav>
-    <div>
-        <h1> <strong>About Me</strong></h1>
-        <div class="jumbotron text-center">
-            <h1>My First Bootstrap Page</h1>
-            <p>Resize this responsive page to see the effect!</p>
-          </div> 
-        <ol>
-            <li><h3>Cheston Opsasnick</h3>
-                
-            <table class = "table2">
-                <tr>
-                    <td><img src="https://media.licdn.com/dms/image/D4E03AQGRb86J0OVgTw/profile-displayphoto-shrink_400_400/0/1704831110032?e=1711584000&v=beta&t=tCRURW9Zb9CO9bBAf4iADGWp63y59v8E8L4MKHcDtQY" alt="Image of Me"></td>
-                    <td>
-                        <h3>Some Things About Me</h3>
-                        <ul>
-                            <li>
-                                I am from Cupertino California
-                            </li>
-                            <li>
-                                Majoring in Computer Science at Minneosta
-                            </li>
-                            <li>
-                                I like skiing and outdoor activities
-                            </li>
-                            <li>
-                                I am a San Francsisco 49ers fan
-                            </li>
-                        </ul>
-                    </td>
-                    
-                </tr>     
-            </table>
-            </li>
-            <li><h3>My Favorite Youtube Video</h3>
-            <div>
-                <iframe class="youtube-video" src="https://www.youtube.com/embed/xuCn8ux2gbs?si=qV3sVvjJSawlEsEo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-            </li>
-        </ol>
-    </div>
+  <h1>Delt Lunch & Dinner Schedule</h1>
 
-   
+  <table>
+    <thead>
+      <tr>
+        <th>Monday Lunch</th>
+        <th>Tuesday Lunch</th>
+        <th>Tuesday Dinner</th>
+        <th>Wednesday Lunch</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Wednesday Dinner</th>
+        <th>Thursday Lunch</th>
+        <th>Thursday Dinner</th>
+        <th>Friday Lunch</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+      <tr>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+        <td contenteditable="true"></td>
+      </tr>
+    </tbody>
+  </table>
 </body>
 </html>
