@@ -8,13 +8,13 @@ const Home = () => {
       <ContentContainer>
         {/* Image on the left */}
         <ImageContainer>
-          <Image path="/src/assets/head_shot.png" size="200px" radius="20%" />
+          <Image path="/public/head_shot.png" size="200px" radius="20%" />
         </ImageContainer>
         {/* Text content on the right */}
         <TextContainer>
           <Title>Hi, I'm Cheston Opsasnick</Title>
           <CurrentActivity>
-            <strong>Currently:</strong> Pursuing a Master's in Computer Science at the University of Minnesota. <Image path="/src/assets/minnesota.png" size="5%" />
+            <strong>Currently:</strong> Pursuing a Master's in Computer Science at the University of Minnesota. <Image path="/public/minnesota.png" size="5%" />
           </CurrentActivity>
           <Description>
             I love building software that solves real-world problems. I have experience in full-stack development, machine learning, and systems programming.
