@@ -1,29 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect, use } from 'react'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
+import NavBar from './components/NavBar'
+import Profile from "./pages/Profile";
+import Home from "./pages/Home"
+import Projects from "./pages/Projects";
+import Contact from "./pages/Contact";
+import DustBackground from "./components/DustBackground";
+
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  useEffect(() => {
+    DustBackground();
+  }, []);
   return (
     <>
-      <div>
-        HELLOWWWW
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/projects" element={<Projects />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </Router>
     </>
+
   )
 }
 
