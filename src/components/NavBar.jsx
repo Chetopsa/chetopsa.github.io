@@ -14,7 +14,7 @@ const NavBar = () => {
       <Header>
         <LogoLink href="#">
           <Logo
-            src="/public/pixil-frame-0.png"
+            src="/pixil-frame-0.png"
             alt="logo"
           />
         </LogoLink>
