@@ -1,0 +1,12 @@
+{
+    "projects": [
+        {
+            "title": "Gamblr",
+            "description": "Developed a personal gambling tracker using Vue for the frontend and firebase on the backend. Implemented an editable widget board with various data visualizations and charts",
+            "deployment": "gamblr-16a50.firebaseapp.com",
+            
+
+
+        }
+    ]
+}
