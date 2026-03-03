@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
+import {colors} from "/src/colors";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,28 +15,55 @@ const NavBar = () => {
       <Header>
         <LogoLink href="#">
           <Logo
-            src="/pixil-frame-0.png"
+            src="/minnesota.png"
             alt="logo"
           />
         </LogoLink>
+        <LogoLink href="#">
+          <Logo
+            src="/10-101017_nhl-clipart-removebg-preview.png"
+            alt="sharks logo"
+          />
+        </LogoLink>
+        <LogoLink href="#">
+          <Logo
+            src="/bosox.png"
+            alt="red sox logo"
+          />
+        </LogoLink>
+        <LogoLink href="#">
+          <Logo
+            src="/San_Francisco_49ers_logo.svg.png"
+            alt="49ers logo"
+          />
+        </LogoLink>
         <IconsLabel onClick={toggleMenu}>
+          <Hamburger>
+            <img src="/hamburger-menu-mobile-svgrepo-com.svg" alt="menu" width="30" height="30" />
+          </Hamburger>
           {isOpen ? (
             <i className="bx bx-x" id="close-icon"></i>
           ) : (
             <i className="bx bx-menu" id="menu-icon"></i>
           )}
         </IconsLabel>
+        {/* {isOpen && (
+          <CloseIcon onClick={toggleMenu}>
+            <i className="bx bx-x"></i>
+          </CloseIcon>
+        )} */}
+        
         <Navbar isOpen={isOpen}>
-          <NavItem href="#" isOpen={isOpen} style={{ "--i": 0 }}>
+          <NavItem href="/" isOpen={isOpen} style={{ "--i": 0 }}>
             Home
           </NavItem>
-          <NavItem href="#" isOpen={isOpen} style={{ "--i": 1 }}>
+          <NavItem href="/profile" isOpen={isOpen} style={{ "--i": 1 }}>
             Profile
           </NavItem>
-          <NavItem href="#" isOpen={isOpen} style={{ "--i": 2 }}>
+          <NavItem href="/projects" isOpen={isOpen} style={{ "--i": 2 }}>
             Projects
           </NavItem>
-          <NavItem href="#" isOpen={isOpen} style={{ "--i": 3 }}>
+          <NavItem href="/contact" isOpen={isOpen} style={{ "--i": 3 }}>
             Contact
           </NavItem>
         </Navbar>
@@ -69,7 +97,9 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   z-index: 5;
-  background: none;
+  background: ${colors.teal};
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
 `;
 
 const LogoLink = styled.a``;
@@ -144,4 +174,15 @@ const NavItem = styled.a`
   }
 `;
 
+const Hamburger = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0.4rem;
+  &:hover {
+    background: rgba(150, 150, 150, 0.18);
+    border-radius: 50%;
+  }
+`;
 export default NavBar;

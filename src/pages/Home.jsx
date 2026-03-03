@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Image from "/src/components/atoms/Image";
 import StravaCard from "/src/components/StravaCard";
+import {colors} from '/src/colors.js';
 
 const Home = () => {
   return (
@@ -15,7 +16,7 @@ const Home = () => {
         <TextContainer>
           <Title>Hi, I'm Cheston Opsasnick</Title>
           <CurrentActivity>
-            <strong>Currently:</strong> Pursuing a Master's in Computer Science at the University of Minnesota. <Image path="/minnesota.png" size="5%" />
+            <strong>Currently:</strong> Pursuing a Master's in Computer Science at the University of Minnesota.
           </CurrentActivity>
           <Description>
             I love building software that solves real-world problems. I have experience in full-stack development, machine learning, and systems programming.
@@ -48,11 +49,14 @@ const Home = () => {
         <ProjectsDescription>
           Check out my work on my <GitHubLink href="/projects">Projects Page</GitHubLink> or visit my  
           <GitHubLink href="https://github.com/chetopsa" target="_blank" rel="noopener noreferrer">
-            <i className="fab fa-github"></i> GitHub Profile
+            <i className="fab fa-github"></i> GitHub
           </GitHubLink>.
         </ProjectsDescription>
       </ProjectsSection>
-      <StravaCard />
+      <RunSection>
+        <RunTitle>Here's my Latest Run</RunTitle>
+        <StravaCard />
+      </RunSection>
     </HomeContainer>
   );
 };
@@ -65,10 +69,10 @@ const HomeContainer = styled.div`
   align-items: center;
   text-align: center;
   font-family: Arial, sans-serif;
-  color: #fff;
-  padding: 2rem;
+  color: ${colors.white};
+  padding: 4rem 2rem;
+  margin-top: 4rem;
 `;
-
 const ContentContainer = styled.div`
   display: flex;
   align-items: center;
@@ -96,17 +100,20 @@ const TextContainer = styled.div`
 const Title = styled.h1`
   font-size: 2.5rem;
   margin-bottom: 1rem;
+    color: ${colors.white};
 `;
 
 const CurrentActivity = styled.p`
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 1rem;
+    color: ${colors.white};
 `;
 
 const Description = styled.p`
   font-size: 1rem;
   line-height: 1.6;
+    color: ${colors.white};
 `;
 
 const SkillsSection = styled.div`
@@ -134,10 +141,11 @@ const Skill = styled.div`
   flex-direction: column;
   align-items: center;
   font-size: 2rem;
-  color: #fff;
+     color: ${colors.white};
 
   i {
     margin-bottom: 0.5rem;
+      color: ${colors.teal};
   }
 `;
 
@@ -148,16 +156,18 @@ const SkillName = styled.p`
 const ProjectsSection = styled.div`
   margin-top: 3rem;
   text-align: center;
-  border: 1px solid rgba(168, 239, 255, 0.5);
   padding: 2rem;
   border-radius: 1rem;
-  width: 100%;
-  background: rgba(168, 239, 255, 0.1);
+    border: .2rem solid ${colors.green};
+    width: 100%;
+    background: rgba(23, 71, 48, 0.05);
+  
 `;
 
 const ProjectsTitle = styled.h2`
   font-size: 2rem;
   margin-bottom: 1rem;
+  color: ${colors.white};
 `;
 
 const ProjectsDescription = styled.p`
@@ -165,13 +175,9 @@ const ProjectsDescription = styled.p`
   line-height: 1.6;
 
   a {
-    color: #a8efff;
+     color: ${colors.teal};
     text-decoration: none;
     font-weight: bold;
-
-    &:hover {
-      text-decoration: underline;
-    }
   }
 `;
 
@@ -179,23 +185,43 @@ const GitHubLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: #a8efff;
+  color: ${colors.teal};
   text-decoration: none;
   font-weight: bold;
-  border: 1px solid #a8efff;
-  background: rgba(168, 239, 255, 0.1);
+  border: .1rem solid ${colors.teal};
   padding: 0.5rem 1rem;
   margin-left: 1rem;
   margin-right: 1rem;
   border-radius: 1rem;
+  background: rgba(23, 71, 48, 0.05); 
 
   &:hover {
-    text-decoration: underline;
+     border-color: ${colors.green};
   }
-
   i {
     font-size: 1.5rem;
+    color: ${colors.green};
   }
+`;
+
+const RunSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  text-align: center;
+    border: .2rem solid ${colors.green};
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 100%;
+    background: rgba(23, 71, 48, 0.10); /* hint of green, mostly transparent */
+`;
+
+const RunTitle = styled.h2`
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  letter-spacing: 1px;
 `;
 
 export default Home;

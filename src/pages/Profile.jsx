@@ -1,16 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { colors } from "../colors";
 
 const ProfileContainer = styled.div`
   font-family: Arial, sans-serif;
-  padding: 20px;
-  max-width: 800px;
+  padding: 32px 0;
   margin: 0 auto;
   line-height: 1.6;
+  max-width: 1200px;
+  width: 90vw;
+
 `;
 
-const Section = styled.div`
+const AccordionContainer = styled.div`
   margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  background: rgba(23, 71, 48, 0.08);
+  width: 100%;
+  min-width: 0;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const AccordionHeader = styled.button`
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  text-align: left;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem;
+  cursor: pointer;
+  color: ${colors.white};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+`;
+
+const AccordionContent = styled.div`
+  padding: 0 0 12px 0;
+  animation: fadeIn 0.2s;
+
 `;
 
 const Header = styled.h1`
@@ -32,20 +66,12 @@ const ListItem = styled.li`
   margin-bottom: 5px;
 `;
 
-const Profile = () => {
-  return (
-    <ProfileContainer>
-      <Section>
-        <Header>Cheston Opsasnick</Header>
-        <p>
-          <a href="mailto:opsasnickcheston@gmail.com">opsasnickcheston@gmail.com</a> • (650) - 450 - 2838 •
-          <a href="https://www.linkedin.com/in/ChestonO" target="_blank" rel="noopener noreferrer">
-            www.linkedin.com/in/ChestonO
-          </a>
-        </p>
-      </Section>
-
-      <Section>
+const sections = [
+  
+  {
+    title: "Education",
+    content: (
+      <>
         <SubHeader>Education</SubHeader>
         <p>
           <strong>University of Minnesota, Twin Cities</strong> — Minneapolis, MN
@@ -54,9 +80,13 @@ const Profile = () => {
         <p>Master of Science, Computer Science (Expected May 2026)</p>
         <p>Bachelor of Science, Computer Science (May 2025)</p>
         <p>Integrated B.S./M.S. Program in Computer Science</p>
-      </Section>
-
-      <Section>
+      </>
+    )
+  },
+  {
+    title: "Skills",
+    content: (
+      <>
         <SubHeader>Skills</SubHeader>
         <p>
           <strong>Programming Languages:</strong> Python, TypeScript, JavaScript, SQL, C++, C, Java, HTML, CSS, OCaml
@@ -65,9 +95,13 @@ const Profile = () => {
           <strong>Tools:</strong> Node.js, Express.js, PostgreSQL, Flask, GraphQL, React, Docker, Unix, Git, PyTorch,
           MySQL, EC2, S3
         </p>
-      </Section>
-
-      <Section>
+      </>
+    )
+  },
+  {
+    title: "Relevant Coursework",
+    content: (
+      <>
         <SubHeader>Relevant Coursework</SubHeader>
         <List>
           <ListItem>Advanced Algorithms and Data Structures</ListItem>
@@ -82,9 +116,13 @@ const Profile = () => {
           <ListItem>Distributed Computing</ListItem>
           <ListItem>Data Visualization</ListItem>
         </List>
-      </Section>
-
-      <Section>
+      </>
+    )
+  },
+  {
+    title: "Work Experience",
+    content: (
+      <>
         <SubHeader>Work Experience</SubHeader>
         <p>
           <strong>Software Engineer Intern, Lifeworks Advisors</strong> (May 2025 - Jan 2026)
@@ -110,9 +148,13 @@ const Profile = () => {
             and delivering production-ready features
           </ListItem>
         </List>
-      </Section>
-
-      <Section>
+      </>
+    )
+  },
+  {
+    title: "Projects",
+    content: (
+      <>
         <SubHeader>Projects</SubHeader>
         <p>
           <strong>GamblR (gamblr-16a50.firebaseapp.com), Programming an Interactive Web</strong> (November 2025)
@@ -160,7 +202,30 @@ const Profile = () => {
         <List>
           <ListItem>Multi-threaded TCP client–server application in C on Linux</ListItem>
         </List>
-      </Section>
+      </>
+    )
+  }
+];
+
+const Profile = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+  const handleToggle = idx => {
+    setOpenIndex(openIndex === idx ? null : idx);
+  };
+
+  return (
+    <ProfileContainer>
+      {sections.map((section, idx) => (
+        <AccordionContainer key={section.title}>
+          <AccordionHeader onClick={() => handleToggle(idx)}>
+            {section.title}
+            <span>{openIndex === idx ? "▲" : "▼"}</span>
+          </AccordionHeader>
+          {openIndex === idx && (
+            <AccordionContent>{section.content}</AccordionContent>
+          )}
+        </AccordionContainer>
+      ))}
     </ProfileContainer>
   );
 };
