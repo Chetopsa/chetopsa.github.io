@@ -9,7 +9,7 @@ const DustBackground = () => {
 
         for (let i = 0; i < count; i++) {
           const x = rand(0, w),
-            y = rand(0, h);
+          y = rand(0, h);
           const typeChance = Math.random();
 
           // Decide if this is a bright highlight (~2.5%)
