@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "/src/components/atoms/Image";
+import StravaCard from "/src/components/StravaCard";
 
 const Home = () => {
   return (
@@ -51,6 +52,7 @@ const Home = () => {
           </GitHubLink>.
         </ProjectsDescription>
       </ProjectsSection>
+      <StravaCard />
     </HomeContainer>
   );
 };

@@ -29,8 +29,20 @@ jobs:
             "https://www.strava.com/api/v3/athlete/activities?per_page=1")
 
           ACTIVITY_ID=$(echo $ACTIVITY | jq -r '.[0].id')
+          NAME=$(echo $ACTIVITY | jq -r '.[0].name')
+          DISTANCE=$(echo $ACTIVITY | jq -r '.[0].distance')
+          MOVING_TIME=$(echo $ACTIVITY | jq -r '.[0].moving_time')
+          DATE=$(echo $ACTIVITY | jq -r '.[0].start_date_local')
 
-          echo "{\"id\": $ACTIVITY_ID}" > latest.json
+          echo "{
+            \"id\": $ACTIVITY_ID,
+            \"name\": \"$NAME\",
+            \"distance\": $DISTANCE,
+            \"moving_time\": $MOVING_TIME,
+            \"date\": \"$DATE\"
+          }" > latest.json
+
+          
 
       - name: Commit changes
         run: |
