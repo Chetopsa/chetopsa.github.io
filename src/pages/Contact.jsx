@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const Contact = () => {
+  const email = "opsasnickcheston@gmail.com"
   return (
     <ContactContainer>
       <Title>Contact Me</Title>
@@ -9,6 +10,9 @@ const Contact = () => {
         Hi, I'm Cheston Opsasnick, a passionate software engineer with expertise in
         full-stack development, machine learning, and building innovative solutions.
       </Subtitle>
+      <Text>
+        If you'd like to get in touch, feel free to reach out via email at <a href={`mailto:${email}`}>{email}</a>
+      </Text>
     </ContactContainer>
   );
 };
@@ -28,6 +32,11 @@ const ContactContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   margin-bottom: 1rem;
+`;
+const Text = styled.p`
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  color: #fff;
 `;
 
 const Subtitle = styled.p`
