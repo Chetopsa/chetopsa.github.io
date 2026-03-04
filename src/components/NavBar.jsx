@@ -18,7 +18,7 @@ const NavBar = () => {
             src="/minnesota.png"
             alt="logo"
           />
-        </LogoLink>
+        {/* </LogoLink>
         <LogoLink href="#">
           <Logo
             src="/10-101017_nhl-clipart-removebg-preview.png"
@@ -36,7 +36,7 @@ const NavBar = () => {
             src="/San_Francisco_49ers_logo.svg.png"
             alt="49ers logo"
           />
-        </LogoLink>
+        </LogoLink> */}
         <IconsLabel onClick={toggleMenu}>
           <Hamburger>
             <img src="/hamburger-menu-mobile-svgrepo-com.svg" alt="menu" width="30" height="30" />
