@@ -18,8 +18,8 @@ const NavBar = () => {
             src="/minnesota.png"
             alt="logo"
           />
-        {/* </LogoLink>
-        <LogoLink href="#">
+        </LogoLink>
+        {/* <LogoLink href="#">
           <Logo
             src="/10-101017_nhl-clipart-removebg-preview.png"
             alt="sharks logo"

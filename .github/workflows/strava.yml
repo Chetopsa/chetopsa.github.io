@@ -42,12 +42,34 @@ jobs:
             \"date\": \"$DATE\"
           }" > latest.json
 
-          
+          # Get old activity ID if file exists
+          if [ -f latest.json ]; then
+            OLD_ID=$(git show HEAD:latest.json 2>/dev/null | jq -r '.id' || echo "")
+          else
+            OLD_ID=""
+          fi
+
+          # Only proceed if activity changed
+          if [ "$ACTIVITY_ID" != "$OLD_ID" ]; then
+            echo "NEW_ACTIVITY=true" >> $GITHUB_ENV
+          else
+            echo "NEW_ACTIVITY=false" >> $GITHUB_ENV
+          fi
 
       - name: Commit changes
+        if: env.NEW_ACTIVITY == 'true'
         run: |
           git config user.name "g125150503+Chetopsa@users.noreply.github.com"
           git config user.email "Chetopsa"
           git add latest.json
-          git commit -m "Update latest Strava activity" || echo "No changes"
+          git commit -m "Update latest Strava activity"
           git push
+
+      - name: Trigger deploy workflow
+        if: env.NEW_ACTIVITY == 'true'
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches \
+            -d '{"ref":"main"}'
