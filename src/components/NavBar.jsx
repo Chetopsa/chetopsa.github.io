@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import {colors} from "/src/colors";
 
@@ -9,11 +10,17 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
+  // Client-side routing leaves the mobile drawer open over the new route;
+  // full page loads used to tear it down for us.
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
       <GlobalStyles />
       <Header>
-        <LogoLink href="#">
+        <LogoLink to="/" onClick={closeMenu}>
           <Logo
             src="/minnesota.png"
             alt="logo"
@@ -53,17 +60,20 @@ const NavBar = () => {
           </CloseIcon>
         )} */}
         
-        <Navbar isOpen={isOpen}>
-          <NavItem href="/" isOpen={isOpen} style={{ "--i": 0 }}>
+        <Navbar $isOpen={isOpen}>
+          <NavItem to="/" $isOpen={isOpen} style={{ "--i": 0 }} onClick={closeMenu}>
             Home
           </NavItem>
-          <NavItem href="/profile" isOpen={isOpen} style={{ "--i": 1 }}>
+          <NavItem to="/profile" $isOpen={isOpen} style={{ "--i": 1 }} onClick={closeMenu}>
             Profile
           </NavItem>
-          <NavItem href="/projects" isOpen={isOpen} style={{ "--i": 2 }}>
+          <NavItem to="/projects" $isOpen={isOpen} style={{ "--i": 2 }} onClick={closeMenu}>
             Projects
           </NavItem>
-          <NavItem href="/contact" isOpen={isOpen} style={{ "--i": 3 }}>
+          <NavItem to="/blog" $isOpen={isOpen} style={{ "--i": 3 }} onClick={closeMenu}>
+            Blog
+          </NavItem>
+          <NavItem to="/contact" $isOpen={isOpen} style={{ "--i": 4 }} onClick={closeMenu}>
             Contact
           </NavItem>
         </Navbar>
@@ -102,7 +112,7 @@ const Header = styled.header`
   box-shadow: 0 2px 16px rgba(0,0,0,0.08);
 `;
 
-const LogoLink = styled.a``;
+const LogoLink = styled(Link)``;
 const Logo = styled.img`
   width: 40px;
 `;
@@ -126,7 +136,9 @@ const Navbar = styled.nav`
     top: 100%;
     left: 0;
     width: 100%;
-    height: ${({ isOpen }) => (isOpen ? "16rem" : "0")};
+    /* 5 items at ~4rem each; overflow is hidden, so a short drawer clips
+       the last link entirely. */
+    height: ${({ $isOpen }) => ($isOpen ? "20rem" : "0")};
     background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(50px);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
@@ -137,7 +149,7 @@ const Navbar = styled.nav`
   }
 `;
 
-const NavItem = styled.a`
+const NavItem = styled(Link)`
   position: relative;
   color: #fff;
   font-size: 1rem;
@@ -151,8 +163,8 @@ const NavItem = styled.a`
     font-size: 1.1rem;
     margin: 2rem 0;
     text-align: center;
-    opacity: ${({ isOpen }) => (isOpen ? "1" : "0")};
-    transform: ${({ isOpen }) => (isOpen ? "translateY(0)" : "translateY(-50px)")};
+    opacity: ${({ $isOpen }) => ($isOpen ? "1" : "0")};
+    transform: ${({ $isOpen }) => ($isOpen ? "translateY(0)" : "translateY(-50px)")};
     transition: all 0.3s ease;
   }
   &:hover {

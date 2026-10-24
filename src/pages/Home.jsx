@@ -19,7 +19,7 @@ const Home = () => {
             <strong>Currently:</strong> Pursuing a Master's in Computer Science at the University of Minnesota.
           </CurrentActivity>
           <Description>
-            I love building software that solves real-world problems. I have experience in full-stack development, machine learning, and systems programming.
+           I like making stuff (often times with code). Currently looking for full time oppurtunities involving software. I also like running, I have my latest run on strava shown as proof (hopefully I haven't been slacking). 
           </Description>
         </TextContainer>
       </ContentContainer>

@@ -4,13 +4,34 @@ on:
   push:
     branches:
       - main
+  # Allows a manual run from the Actions tab.
+  workflow_dispatch:
+  # Called by strava.yml after it commits a new latest.json. A reusable
+  # workflow call executes inside the SAME workflow run, so it is not subject
+  # to the rule that events raised by GITHUB_TOKEN cannot start new workflow
+  # runs. That rule is why the old `workflow_dispatch` curl silently did
+  # nothing and the site sat unbuilt for months.
+  workflow_call:
+
+permissions:
+  contents: write
+
+# gh-pages force-pushes the dist/ tree, so two deploys at once can clobber
+# each other. Queue them instead of cancelling: the last one must win.
+concurrency:
+  group: gh-pages-deploy
+  cancel-in-progress: false
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Always build the tip of main. On a workflow_call from strava.yml the
+          # run's github.sha predates the latest.json commit that job just made,
+          # so the default checkout would publish stale Strava data.
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -22,8 +43,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.email "g125150503+Chetopsa@users.noreply.github.com"
           git config --global user.name "Chetopsa"
+          git config --global user.email "g125150503+Chetopsa@users.noreply.github.com"
 
       - name: Deploy
         run: npm run deploy

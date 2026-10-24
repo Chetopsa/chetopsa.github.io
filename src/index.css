@@ -22,10 +22,16 @@ a:hover {
   color: #535bf2;
 }
 
+/* Deliberately NOT a flex container. Vite's scaffolding had
+   `display: flex; place-items: center` here to centre a single demo card, but
+   it makes #root a flex item, and a flex item with `width: auto` is sized to
+   max-content. #root's width therefore tracked its longest line of text, so
+   filtering the blog by tag resized it (287px -> 675px, measured) and
+   `margin: 0 auto` re-centred it — the whole page jumped sideways.
+   As a block, #root fills the viewport up to its max-width: stable whatever
+   the content. Every page centres itself, so nothing here relied on the flex. */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }

@@ -5,71 +5,106 @@ on:
     - cron: "0 * * * *"   # every hour
   workflow_dispatch:      # allow manual run
 
+permissions:
+  contents: write
+
 jobs:
   update-activity:
     runs-on: ubuntu-latest
+    outputs:
+      updated: ${{ steps.fetch.outputs.updated }}
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Fetch latest activity
+        id: fetch
+        env:
+          # Passed as env rather than interpolated into the script, so a secret
+          # containing shell metacharacters can't break or inject anything.
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
         run: |
-          # Refresh access token
-          TOKEN_RESPONSE=$(curl -s -X POST https://www.strava.com/oauth/token \
-            -d client_id=${{ secrets.STRAVA_CLIENT_ID }} \
-            -d client_secret=${{ secrets.STRAVA_CLIENT_SECRET }} \
-            -d grant_type=refresh_token \
-            -d refresh_token=${{ secrets.STRAVA_REFRESH_TOKEN }})
+          set -euo pipefail
 
-          ACCESS_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.access_token')
+          TOKEN_RESPONSE=$(curl -sS -X POST https://www.strava.com/oauth/token \
+            -d "client_id=${STRAVA_CLIENT_ID}" \
+            -d "client_secret=${STRAVA_CLIENT_SECRET}" \
+            -d "grant_type=refresh_token" \
+            -d "refresh_token=${STRAVA_REFRESH_TOKEN}")
 
-          # Get latest activity
-          ACTIVITY=$(curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
-            "https://www.strava.com/api/v3/athlete/activities?per_page=1")
-
-          ACTIVITY_ID=$(echo $ACTIVITY | jq -r '.[0].id')
-          NAME=$(echo $ACTIVITY | jq -r '.[0].name')
-          DISTANCE=$(echo $ACTIVITY | jq -r '.[0].distance')
-          MOVING_TIME=$(echo $ACTIVITY | jq -r '.[0].moving_time')
-          DATE=$(echo $ACTIVITY | jq -r '.[0].start_date_local')
-
-          echo "{
-            \"id\": $ACTIVITY_ID,
-            \"name\": \"$NAME\",
-            \"distance\": $DISTANCE,
-            \"moving_time\": $MOVING_TIME,
-            \"date\": \"$DATE\"
-          }" > latest.json
-
-          # Get old activity ID if file exists
-          if [ -f latest.json ]; then
-            OLD_ID=$(git show HEAD:latest.json 2>/dev/null | jq -r '.id' || echo "")
-          else
-            OLD_ID=""
+          ACCESS_TOKEN=$(jq -r '.access_token // empty' <<<"$TOKEN_RESPONSE")
+          if [ -z "$ACCESS_TOKEN" ]; then
+            echo "::error::Strava token refresh failed. Rotate STRAVA_CLIENT_ID / STRAVA_CLIENT_SECRET / STRAVA_REFRESH_TOKEN in repo secrets."
+            jq -c '{message, errors}' <<<"$TOKEN_RESPONSE" || echo "$TOKEN_RESPONSE"
+            exit 1
           fi
 
-          # Only proceed if activity changed
-          if [ "$ACTIVITY_ID" != "$OLD_ID" ]; then
-            echo "NEW_ACTIVITY=true" >> $GITHUB_ENV
+          # Strava can rotate the refresh token. The workflow has no way to write
+          # the new one back to secrets, so shout about it rather than silently
+          # breaking on some future run.
+          NEW_REFRESH=$(jq -r '.refresh_token // empty' <<<"$TOKEN_RESPONSE")
+          if [ -n "$NEW_REFRESH" ] && [ "$NEW_REFRESH" != "$STRAVA_REFRESH_TOKEN" ]; then
+            echo "::warning::Strava returned a NEW refresh token. Update the STRAVA_REFRESH_TOKEN secret or future runs will start failing."
+          fi
+
+          ACTIVITIES=$(curl -sS -H "Authorization: Bearer $ACCESS_TOKEN" \
+            "https://www.strava.com/api/v3/athlete/activities?per_page=1")
+
+          # On error Strava returns an object, not an array. Without this check a
+          # failure wrote {"id": null} over good data and committed it.
+          if ! jq -e 'type == "array"' >/dev/null 2>&1 <<<"$ACTIVITIES"; then
+            echo "::error::Strava activities request failed."
+            echo "$ACTIVITIES"
+            exit 1
+          fi
+
+          if [ "$(jq 'length' <<<"$ACTIVITIES")" -eq 0 ]; then
+            echo "Strava returned no activities; leaving latest.json alone."
+            echo "updated=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Built with jq, not string interpolation: an activity name containing
+          # a quote, backslash or emoji would otherwise produce invalid JSON.
+          # `date` is start_date (real UTC); the old script used start_date_local
+          # but suffixed it "Z", labelling local time as UTC.
+          jq '.[0] | {id, name, distance, moving_time, date: .start_date}' \
+            <<<"$ACTIVITIES" > latest.json.new
+
+          NEW_ID=$(jq -r '.id' latest.json.new)
+          OLD_ID=$(git show HEAD:latest.json 2>/dev/null | jq -r '.id // empty' || true)
+
+          if [ "$NEW_ID" = "$OLD_ID" ]; then
+            rm latest.json.new
+            echo "Unchanged (activity $NEW_ID)."
+            echo "updated=false" >> "$GITHUB_OUTPUT"
           else
-            echo "NEW_ACTIVITY=false" >> $GITHUB_ENV
+            mv latest.json.new latest.json
+            echo "New activity $NEW_ID (was ${OLD_ID:-none})."
+            cat latest.json
+            echo "updated=true" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Commit changes
-        if: env.NEW_ACTIVITY == 'true'
+        if: steps.fetch.outputs.updated == 'true'
         run: |
-          git config user.name "g125150503+Chetopsa@users.noreply.github.com"
-          git config user.email "Chetopsa"
+          set -euo pipefail
+          # name and email were swapped here, which made every bot commit show
+          # an invalid author.
+          git config user.name "Chetopsa"
+          git config user.email "g125150503+Chetopsa@users.noreply.github.com"
           git add latest.json
           git commit -m "Update latest Strava activity"
           git push
 
-      - name: Trigger deploy workflow
-        if: env.NEW_ACTIVITY == 'true'
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches \
-            -d '{"ref":"main"}'
+  # The site bakes latest.json in at build time, so a new activity is only
+  # visible after a rebuild. Calling deploy.yml as a reusable workflow is what
+  # makes that actually happen - see the note in deploy.yml.
+  deploy:
+    needs: update-activity
+    if: needs.update-activity.outputs.updated == 'true'
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
