@@ -1,0 +1,33 @@
+# Sveltia CMS — https://sveltiacms.app
+# Served as a static file at /admin/config.yml (Vite copies public/ verbatim).
+#
+# Auth: log in with a fine-grained GitHub personal access token scoped to ONLY
+# this repository, with Contents: Read and write. The token is stored in your
+# browser, so keeping it scoped to one repo keeps the blast radius small.
+#
+# Note the capital C in the owner — the GitHub API is case-sensitive here, even
+# though the deploy URL in package.json uses lowercase.
+backend:
+  name: github
+  repo: Chetopsa/chetopsa.github.io
+  branch: main
+
+media_folder: "/public/uploads/blog"
+public_folder: "/uploads/blog"
+
+collections:
+  - name: posts
+    label: Blog Posts
+    label_singular: Post
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    sortable_fields: [date, title]
+    fields:
+      - { name: title,   label: Title,   widget: string }
+      - { name: date,    label: Date,    widget: datetime, type: date }
+      - { name: excerpt, label: Excerpt, widget: text, required: false }
+      - { name: tags,    label: Tags,    widget: list, required: false }
+      - { name: draft,   label: Draft,   widget: boolean, default: true }
+      - { name: body,    label: Body,    widget: markdown }
